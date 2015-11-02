@@ -28,7 +28,7 @@ var path = require('path'),
     checkGrowl = require('../lib/checkGrowl'),
     Toaster = require('./toaster'),
     Growl = require('./growl'),
-    cloneDeep = require('lodash.clonedeep');
+    cloneDeep = require('lodash').cloneDeep
 
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');

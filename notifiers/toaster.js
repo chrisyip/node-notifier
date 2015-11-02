@@ -5,7 +5,7 @@ var path = require('path'),
     notifier = path.resolve(__dirname, '../vendor/toaster/toast.exe'),
     utils = require('../lib/utils'),
     Balloon = require('./balloon'),
-    cloneDeep = require('lodash.clonedeep');
+    cloneDeep = require('lodash').cloneDeep
 
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');

@@ -28,10 +28,9 @@
     "should": "^4.0.4"
   },
   "dependencies": {
-    "cli-usage": "^0.1.1",
+    "commander": "^2.9.0",
     "growly": "^1.2.0",
-    "lodash.clonedeep": "^3.0.0",
-    "minimist": "^1.1.1",
+    "lodash": "^3.10.1",
     "semver": "^4.0.3",
     "shellwords": "^0.1.0",
     "which": "^1.0.5"

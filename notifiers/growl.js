@@ -4,7 +4,7 @@
 var utils = require('../lib/utils'),
     checkGrowl = require('../lib/checkGrowl');
     growly = require('growly'),
-    cloneDeep = require('lodash.clonedeep');
+    cloneDeep = require('lodash').cloneDeep
 
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');

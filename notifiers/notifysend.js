@@ -4,7 +4,7 @@
 var os = require('os'),
     which = require('which'),
     utils = require('../lib/utils'),
-    cloneDeep = require('lodash.clonedeep');
+    cloneDeep = require('lodash').cloneDeep
 
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');

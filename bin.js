@@ -1,88 +1,84 @@
 #!/usr/bin/env node
 
-var notifier = require('./');
-var minimist = require('minimist');
-var usage = require('cli-usage');
+'use strict'
 
-var aliases = {
-  'help': 'h',
-  'title': 't',
-  'subtitle': 'st',
-  'message': 'm',
-  'icon': 'i',
-  'sound': 's',
-  'open': 'o'
-};
+const notifier = require('./')
 
-var argv = minimist(process.argv.slice(2), {
-  alias: aliases,
-  string: ['icon', 'message', 'open', 'subtitle', 'title']
-});
+const aliases = {
+  title: 't',
+  subtitle: 'st',
+  message: 'm',
+  icon: 'i',
+  sound: 's',
+  open: 'o'
+}
 
-readme(aliases);
+const program = require('commander')
 
-var passedOptions = getOptionsIfExists(Object.keys(aliases), argv);
-var stdinMessage = '';
+program
+  .usage(`
+$ notify -t "Hello" -m "My Message" -s --open http://github.com
+$ notify -t "Agent Coulson" --icon https://raw.githubusercontent.com/mikaelbr/node-notifier/master/example/coulson.jpg
+$ notify -m "My Message" -s Glass
+$ echo "My Message" | notify -t "Hello"
+`)
+  // .help('h')
+  // .string(['icon', 'message', 'open', 'subtitle', 'title'])
 
-process.stdin.on('readable', function(){
-  var chunk = this.read();
+Object.keys(aliases).forEach(key => program.option(`-${aliases[key]}, --${key}`, key))
+
+const argv = program.parse(process.argv)
+
+const passedOptions = getOptionsIfExists(Object.keys(aliases), argv)
+let stdinMessage = ''
+
+process.stdin.on('readable', function () {
+  let chunk = this.read()
   if (!chunk && !stdinMessage) {
-    doNotification(passedOptions);
-    this.end();
-    return;
+    doNotification(passedOptions)
+    this.end()
+    return
   }
-  if (!chunk) return;
-  stdinMessage += chunk.toString();
-});
+  if (!chunk) {
+    return
+  }
+  stdinMessage += chunk.toString()
+})
 
-process.stdin.on('end', function(){
+process.stdin.on('end', function () {
   if (stdinMessage) {
-    passedOptions.message = stdinMessage;
+    passedOptions.message = stdinMessage
   }
-  doNotification(passedOptions);
-});
+  doNotification(passedOptions)
+})
 
 function doNotification (options) {
 
   if (!options.message) {
     // Do not show an empty message
-    process.exit(0);
+    process.exit(0)
   }
   notifier.notify(options, function (err, msg) {
     if (err) {
-      console.error(err.message);
-      process.exit(1);
+      console.error(err.message)
+      process.exit(1)
     }
 
-    if (!msg) return;
-    console.log(msg);
-    process.exit(0);
-  });
+    if (!msg) {
+      return
+    }
+    console.log(msg)
+    process.exit(0)
+  })
 
 }
 
-function getOptionsIfExists(optionTypes, argv) {
-  var options = {};
+function getOptionsIfExists (optionTypes, argv) {
+  let options = {}
   optionTypes.forEach(function (key) {
     if (key && argv[key]) {
-      options[key] = argv[key];
+      options[key] = argv[key]
     }
-  });
-  return options;
-}
-
-function readme(input) {
-  var str = '# notify\n \n## Options\n' + params(input) + '\n\n';
-  str += '## Example\n```shell\n';
-  str += '$ notify -t "Hello" -m "My Message" -s --open http://github.com\n';
-  str += '$ notify -t "Agent Coulson" --icon https://raw.githubusercontent.com/mikaelbr/node-notifier/master/example/coulson.jpg \n';
-  str += '$ notify -m "My Message" -s Glass\n';
-  str += '$ echo "My Message" | notify -t "Hello"```\n\n';
-  usage(str);
-}
-
-function params(input) {
-  return Object.keys(input).reduce(function (acc, key) {
-    return acc + ' * --' + key + ' (alias -' + input[key] + ')\n';
-  }, '');
+  })
+  return options
 }

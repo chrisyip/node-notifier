@@ -5,7 +5,7 @@ var path = require('path'),
     notifier = path.join(__dirname, '../vendor/terminal-notifier.app/Contents/MacOS/terminal-notifier'),
     utils = require('../lib/utils'),
     Growl = require('./growl'),
-    cloneDeep = require('lodash.clonedeep');
+    cloneDeep = require('lodash').cloneDeep
 
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
